@@ -5,7 +5,8 @@ const { data: JWT, pending, error } = await useFetch(`/api/token?slug=${route.pa
 
 <template>
   <div>
-    {{JWT}}
-    <Videocall />
+    <ClientOnly>
+      <Videocall :slug="route.params.slug" :JWT="JWT" />
+    </ClientOnly>
   </div>
 </template>

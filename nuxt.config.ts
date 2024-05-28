@@ -12,4 +12,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === 'video-player-container'
+    }
+  }
 })
