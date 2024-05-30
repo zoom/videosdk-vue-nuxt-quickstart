@@ -28,7 +28,6 @@ function generateSignature(sessionName: string, role: number) {
   const oPayload = {
     app_key: sdkKey, tpc: sessionName, role_type: role, version: 1, iat: iat, exp: exp,
   };
-
   const sHeader = JSON.stringify(oHeader);
   const sPayload = JSON.stringify(oPayload);
   const sdkJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, sdkSecret);
