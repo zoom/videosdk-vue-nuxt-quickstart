@@ -8,29 +8,25 @@ const token = props.JWT;
 const username = `User-${String(new Date().getTime()).slice(6)}`;
 const client = ZoomVideo.createClient();
 
-let videoContainer = document.querySelector('video-player-container') as HTMLElement;
+const videoContainer = ref<HTMLElement>(null);
+const disableStart = ref(false);
+const showStart = ref(true);
+
 onMounted(async () => {
-  videoContainer = document.querySelector('video-player-container') as HTMLElement;
   await client.init("en-US", "Global", { patchJsMedia: true });
 })
 
-const startBtn = ref<HTMLButtonElement>(null);
-const stopBtn = ref<HTMLButtonElement>(null);
-const toggleVideoBtn = ref<HTMLButtonElement>(null);
-
 const startCall = async () => {
+  disableStart.value = true;
   client.on("peer-video-state-change", renderVideo);
-  startBtn.value.disabled = true;
   await client.join(topic, token, username);
   const mediaStream = client.getMediaStream();
   // @ts-expect-error window.safari exists only on safari
   window.safari ? await useWorkAroundForSafari(client) : await mediaStream.startAudio();
   await mediaStream.startVideo();
   await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
-  startBtn.value.style.display = 'none';
-  stopBtn.value.style.display = 'block';
-  toggleVideoBtn.value.style.display = 'block';
-  startBtn.value.disabled = false;
+  showStart.value = false;
+  disableStart.value = false;
 };
 
 const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; }) => {
@@ -40,13 +36,11 @@ const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; })
     Array.isArray(element) ? element.forEach((el) => el.remove()) : element.remove();
   } else {
     const userVideo = await mediaStream.attachVideo(event.userId, VideoQuality.Video_360P);
-    videoContainer.appendChild(userVideo as VideoPlayer);
+    videoContainer.value.appendChild(userVideo as VideoPlayer);
   }
 };
 
 const leaveCall = async () => {
-  stopBtn.value.disabled = true;
-  toggleVideoBtn.value.style.display = 'none';
   const mediaStream = client.getMediaStream();
   for (const user of client.getAllUser()) {
     const element = await mediaStream.detachVideo(user.userId);
@@ -54,9 +48,7 @@ const leaveCall = async () => {
   }
   client.off("peer-video-state-change", renderVideo);
   await client.leave();
-  startBtn.value.style.display = 'block';
-  stopBtn.value.style.display = 'none';
-  stopBtn.value.disabled = false;
+  showStart.value = true;
 }
 
 const toggleVideo = async () => {
@@ -75,22 +67,22 @@ const toggleVideo = async () => {
   <div class="flex flex-1 flex-col h-full min-h-screen relative">
     <div class="flex flex-row self-center">
       <button id="start-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        @click="startCall" ref="startBtn">
+        :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart' v-if="showStart">
         Join
       </button>
-      <button id="stop-btn" class="hidden bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        @click="leaveCall" ref="stopBtn">
+      <button id="stop-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
+        @click="leaveCall" v-if="!showStart">
         Leave
       </button>
     </div>
     <div class="flex flex-row self-center m-2">
-      <button id="toggle-video-btn" class="hidden bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center"
-        @click="toggleVideo" ref="toggleVideoBtn">
+      <button id="toggle-video-btn" class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center"
+        @click="toggleVideo" v-if="!showStart">
         Toggle Video
       </button>
     </div>
     <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto">
-      <video-player-container></video-player-container>
+      <video-player-container ref="videoContainer"></video-player-container>
     </div>
     <div class="text-center absolute bottom-2 w-full">
       Do not expose your SDK Secret to the client, when using this in production

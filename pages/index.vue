@@ -8,7 +8,7 @@ const create = async () => {
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col">
     <h1 class="text-3xl font-bold text-center my-4">Zoom VideoSDK Nuxt Quickstart</h1>
     <div class="flex self-center flex-col">
       <input type="text" placeholder="Session Name"
