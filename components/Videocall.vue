@@ -14,14 +14,23 @@ onMounted(async () => {
   await client.init("en-US", "Global", { patchJsMedia: true });
 })
 
+const startBtn = ref<HTMLButtonElement>(null);
+const stopBtn = ref<HTMLButtonElement>(null);
+const toggleVideoBtn = ref<HTMLButtonElement>(null);
+
 const startCall = async () => {
   client.on("peer-video-state-change", renderVideo);
+  startBtn.value.disabled = true;
   await client.join(topic, token, username);
   const mediaStream = client.getMediaStream();
   // @ts-expect-error window.safari exists only on safari
   window.safari ? await useWorkAroundForSafari(client) : await mediaStream.startAudio();
   await mediaStream.startVideo();
   await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
+  startBtn.value.style.display = 'none';
+  stopBtn.value.style.display = 'block';
+  toggleVideoBtn.value.style.display = 'block';
+  startBtn.value.disabled = false;
 };
 
 const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; }) => {
@@ -36,6 +45,8 @@ const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; })
 };
 
 const leaveCall = async () => {
+  stopBtn.value.disabled = true;
+  toggleVideoBtn.value.style.display = 'none';
   const mediaStream = client.getMediaStream();
   for (const user of client.getAllUser()) {
     const element = await mediaStream.detachVideo(user.userId);
@@ -43,6 +54,9 @@ const leaveCall = async () => {
   }
   client.off("peer-video-state-change", renderVideo);
   await client.leave();
+  startBtn.value.style.display = 'block';
+  stopBtn.value.style.display = 'none';
+  stopBtn.value.disabled = false;
 }
 
 const toggleVideo = async () => {
@@ -59,24 +73,25 @@ const toggleVideo = async () => {
 
 <template>
   <div class="flex flex-1 flex-col h-full min-h-screen relative">
-    <h1 class="text-3xl font-bold text-center my-4">Zoom VideoSDK Quickstart</h1>
     <div class="flex flex-row self-center">
       <button id="start-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        @click="startCall">
+        @click="startCall" ref="startBtn">
         Join
       </button>
       <button id="stop-btn" class="hidden bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        @click="leaveCall">
+        @click="leaveCall" ref="stopBtn">
         Leave
       </button>
     </div>
     <div class="flex flex-row self-center m-2">
       <button id="toggle-video-btn" class="hidden bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center"
-        @click="toggleVideo">
+        @click="toggleVideo" ref="toggleVideoBtn">
         Toggle Video
       </button>
     </div>
-    <video-player-container></video-player-container>
+    <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto">
+      <video-player-container></video-player-container>
+    </div>
     <div class="text-center absolute bottom-2 w-full">
       Do not expose your SDK Secret to the client, when using this in production
       please make sure to use a backend service to sign tokens.
