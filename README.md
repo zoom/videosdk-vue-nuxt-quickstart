@@ -1,75 +1,38 @@
-# Nuxt 3 Minimal Starter
+# Zoom Video SDK Vue/Nuxt 3 Quickstart
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a quickstart for using the Zoom Video SDK for [Vue](https://vuejs.org/) using [Nuxt 3](https://nuxt.com/)
 
-## Setup
+## Prerequisites:
 
-Make sure to install the dependencies:
+- Node LTS
+- Bun (or npm)
+- Zoom Video SDK [credentials](https://developers.zoom.us/docs/video-sdk/get-credentials/)
+
+1. Clone the repository
 
 ```bash
-# npm
-npm install
+git clone https://github.com/zoom/videosdk-nuxt-quickstart.git
+```
 
-# pnpm
-pnpm install
+2. Create an `.env` file in the root directory
 
-# yarn
-yarn install
+```bash
+cd videosdk-nuxt-quickstart
+cp .env.example .env
+```
 
-# bun
+Fill in the `ZOOM_SDK_KEY` and `ZOOM_SDK_SECRET` with your credentials.
+
+3. Install the dependencies
+
+```bash
 bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+4. Run the development server
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
 bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Open a browser and visit `http://localhost:3000`.

@@ -3,8 +3,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
-    ZoomVideoSDKKey: '',
-    ZoomVideoSDKSecret: '',
+    ZoomVideoSDKKey: process.env.ZOOM_SDK_KEY,
+    ZoomVideoSDKSecret: process.env.ZOOM_SDK_SECRET,
   },
   postcss: {
     plugins: {
