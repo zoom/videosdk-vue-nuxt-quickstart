@@ -8,7 +8,7 @@ const token = props.JWT;
 const username = `User-${String(new Date().getTime()).slice(6)}`;
 const client = ZoomVideo.createClient();
 
-const videoContainer = ref<HTMLElement>(null);
+const videoContainer = ref<HTMLElement | null>(null);
 const disableStart = ref(false);
 const showStart = ref(true);
 
@@ -36,7 +36,7 @@ const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; })
     Array.isArray(element) ? element.forEach((el) => el.remove()) : element.remove();
   } else {
     const userVideo = await mediaStream.attachVideo(event.userId, VideoQuality.Video_360P);
-    videoContainer.value.appendChild(userVideo as VideoPlayer);
+    videoContainer.value?.appendChild(userVideo as VideoPlayer);
   }
 };
 
@@ -70,14 +70,14 @@ const toggleVideo = async () => {
         :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart' v-if="showStart">
         Join
       </button>
-      <button id="stop-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        @click="leaveCall" v-if="!showStart">
+      <button id="stop-btn" @click="leaveCall" v-if="!showStart"
+        class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
         Leave
       </button>
     </div>
     <div class="flex flex-row self-center m-2">
-      <button id="toggle-video-btn" class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center"
-        @click="toggleVideo" v-if="!showStart">
+      <button id="toggle-video-btn" @click="toggleVideo" v-if="!showStart"
+        class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
         Toggle Video
       </button>
     </div>

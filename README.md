@@ -1,4 +1,4 @@
-# Zoom Video SDK Vue/Nuxt 3 Quickstart
+# Zoom VideoSDK Vue Nuxt Quickstart
 
 This is a quickstart for using the Zoom Video SDK for [Vue](https://vuejs.org/) using [Nuxt 3](https://nuxt.com/)
 
