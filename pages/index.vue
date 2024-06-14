@@ -14,8 +14,7 @@ const create = async () => {
       <input type="text" placeholder="Session Name" v-model="sessionName"
         class="bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 w-64 self-center" />
       <br />
-      <button id="start-btn" @click="create"
-        class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
+      <button @click="create" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
         Create
       </button>
     </div>

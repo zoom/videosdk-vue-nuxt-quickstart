@@ -61,32 +61,45 @@ const toggleVideo = async () => {
     await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
   }
 };
+const toggleAudio = async () => {
+  const mediaStream = client.getMediaStream();
+  if (client.getCurrentUserInfo().muted) {
+    await mediaStream.unmuteAudio();
+  } else {
+    await mediaStream.muteAudio();
+  }
+};
 </script>
 
 <template>
-  <div class="flex flex-1 flex-col h-full min-h-screen relative">
-    <div class="flex flex-row self-center">
-      <button id="start-btn" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
+  <div className="flex h-full w-full flex-1 flex-col">
+    <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto" v-show="!showStart">
+      <video-player-container ref="videoContainer"></video-player-container>
+    </div>
+    <div className="mx-auto flex w-64 flex-col self-center" v-if="showStart">
+      <div className="w-4" />
+      <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
         :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart' v-if="showStart">
         Join
       </button>
-      <button id="stop-btn" @click="leaveCall" v-if="!showStart"
-        class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
-        Leave
-      </button>
     </div>
-    <div class="flex flex-row self-center m-2">
-      <button id="toggle-video-btn" @click="toggleVideo" v-if="!showStart"
-        class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
-        Toggle Video
-      </button>
-    </div>
-    <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto">
-      <video-player-container ref="videoContainer"></video-player-container>
-    </div>
-    <div class="text-center absolute bottom-2 w-full">
-      Do not expose your SDK Secret to the client, when using this in production
-      please make sure to use a backend service to sign tokens.
+    <div className="flex w-full flex-col justify-around self-center" v-else>
+      <div className="mt-4 flex w-[30rem] flex-1 justify-around self-center rounded-md bg-white p-4">
+        <div class="flex flex-row self-center m-2">
+          <button @click="toggleVideo" v-if="!showStart"
+            class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
+            Toggle Video
+          </button>
+          <button @click="toggleAudio" v-if="!showStart"
+            class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
+            Toggle Audio
+          </button>
+        </div>
+        <button @click="leaveCall" v-if="!showStart"
+          class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
+          Leave
+        </button>
+      </div>
     </div>
   </div>
 </template>
