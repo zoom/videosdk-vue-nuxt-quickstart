@@ -10,7 +10,9 @@ const client = ZoomVideo.createClient();
 
 const videoContainer = ref<HTMLElement | null>(null);
 const disableStart = ref(false);
-const showStart = ref(true);
+const inSession = ref(false);
+const audioMuted = ref(false);
+const videoMuted = ref(false);
 
 onMounted(async () => {
   await client.init("en-US", "Global", { patchJsMedia: true });
@@ -25,8 +27,10 @@ const startCall = async () => {
   window.safari ? await useWorkAroundForSafari(client) : await mediaStream.startAudio();
   await mediaStream.startVideo();
   await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
-  showStart.value = false;
+  inSession.value = true;
   disableStart.value = false;
+  audioMuted.value = mediaStream.isAudioMuted();
+  videoMuted.value = !mediaStream.isCapturingVideo();
 };
 
 const renderVideo = async (event: { action: "Start" | "Stop"; userId: number; }) => {
@@ -48,7 +52,7 @@ const leaveCall = async () => {
   }
   client.off("peer-video-state-change", renderVideo);
   await client.leave();
-  showStart.value = true;
+  inSession.value = false;
 }
 
 const toggleVideo = async () => {
@@ -60,6 +64,7 @@ const toggleVideo = async () => {
     await mediaStream.startVideo();
     await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
   }
+  videoMuted.value = !mediaStream.isCapturingVideo();
 };
 const toggleAudio = async () => {
   const mediaStream = client.getMediaStream();
@@ -68,36 +73,37 @@ const toggleAudio = async () => {
   } else {
     await mediaStream.muteAudio();
   }
+  audioMuted.value = mediaStream.isAudioMuted();
 };
 </script>
 
 <template>
+
+  <h1 className="text-center text-3xl font-bold my-4">
+    Session: {{ props.slug }}
+  </h1>
   <div className="flex h-full w-full flex-1 flex-col">
-    <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto" v-show="!showStart">
+    <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto" v-show="inSession">
       <video-player-container ref="videoContainer"></video-player-container>
     </div>
-    <div className="mx-auto flex w-64 flex-col self-center" v-if="showStart">
-      <div className="w-4" />
+    <div className="mx-auto flex w-64 flex-col self-center" v-if="!inSession">
       <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
-        :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart' v-if="showStart">
+        :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart'>
         Join
       </button>
     </div>
-    <div className="flex w-full flex-col justify-around self-center" v-else>
-      <div className="mt-4 flex w-[30rem] flex-1 justify-around self-center rounded-md bg-white p-4">
-        <div class="flex flex-row self-center m-2">
-          <button @click="toggleVideo" v-if="!showStart"
-            class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
-            Toggle Video
-          </button>
-          <button @click="toggleAudio" v-if="!showStart"
-            class="bg-blue-500 text-white py-2 text-sm px-2 rounded w-48 self-center">
-            Toggle Audio
-          </button>
-        </div>
-        <button @click="leaveCall" v-if="!showStart"
-          class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center">
-          Leave
+    <div className="flex w-full flex-col justify-around self-center" v-if="inSession">
+      <div class="flex flex-row self-center m-2">
+        <button @click="toggleVideo" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mx-2 w-64 self-center">
+          <p v-if="videoMuted">Unmute Video</p>
+          <p v-else>Mute Video</p>
+        </button>
+        <button @click="toggleAudio" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mx-2 w-64 self-center">
+          <p v-if="audioMuted">Unmute Audio</p>
+          <p v-else>Mute Audio</p>
+        </button>
+        <button @click="leaveCall" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mx-2 w-64 self-center">
+          <p>Leave</p>
         </button>
       </div>
     </div>
