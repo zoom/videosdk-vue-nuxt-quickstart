@@ -66,6 +66,7 @@ const toggleVideo = async () => {
   }
   videoMuted.value = !mediaStream.isCapturingVideo();
 };
+
 const toggleAudio = async () => {
   const mediaStream = client.getMediaStream();
   if (client.getCurrentUserInfo().muted) {
@@ -78,21 +79,17 @@ const toggleAudio = async () => {
 </script>
 
 <template>
-
-  <h1 className="text-center text-3xl font-bold my-4">
-    Session: {{ props.slug }}
-  </h1>
-  <div className="flex h-full w-full flex-1 flex-col">
+  <div class="flex h-full w-full flex-1 flex-col">
     <div class="flex h-[80vh] w-[80vw] overflow-hidden self-center margin-auto" v-show="inSession">
       <video-player-container ref="videoContainer"></video-player-container>
     </div>
-    <div className="mx-auto flex w-64 flex-col self-center" v-if="!inSession">
+    <div class="mx-auto flex w-64 flex-col self-center" v-if="!inSession">
       <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded mb-4 w-64 self-center"
         :class="{ 'opacity-50': disableStart }" @click="startCall" :disabled='disableStart'>
         Join
       </button>
     </div>
-    <div className="flex w-full flex-col justify-around self-center" v-if="inSession">
+    <div class="flex w-full flex-col justify-around self-center" v-if="inSession">
       <div class="flex flex-row self-center m-2">
         <button @click="toggleVideo" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mx-2 w-64 self-center">
           <p v-if="videoMuted">Unmute Video</p>
