@@ -11,7 +11,7 @@ This is a quickstart for using the Zoom Video SDK for [Vue](https://vuejs.org/) 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/zoom/videosdk-nuxt-quickstart.git
+git clone https://github.com/zoom/VideoSDK-VueNuxt-Quickstart.git
 ```
 
 2. Create an `.env` file in the root directory
