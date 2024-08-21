@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ZoomVideo, { type VideoPlayer, VideoQuality } from "@zoom/videosdk";
-import { useWorkAroundForSafari } from "../utils";
 
 const props = defineProps(['slug', 'JWT'])
 const topic = props.slug;
@@ -23,8 +22,7 @@ const startCall = async () => {
   client.on("peer-video-state-change", renderVideo);
   await client.join(topic, token, username);
   const mediaStream = client.getMediaStream();
-  // @ts-expect-error window.safari exists only on safari
-  window.safari ? await useWorkAroundForSafari(client) : await mediaStream.startAudio();
+  await mediaStream.startAudio();
   await mediaStream.startVideo();
   await renderVideo({ action: 'Start', userId: client.getCurrentUserInfo().userId });
   inSession.value = true;
