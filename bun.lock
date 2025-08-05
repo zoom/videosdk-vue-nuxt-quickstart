@@ -5,7 +5,7 @@
       "name": "nuxt-app",
       "dependencies": {
         "@types/jsrsasign": "^10.5.14",
-        "@zoom/videosdk": "^2.2.0",
+        "@zoom/videosdk": "^2.2.5",
         "jsrsasign": "^11.1.0",
         "nuxt": "^3.16.2",
         "vue": "^3.5.13",
@@ -365,7 +365,7 @@
 
     "@vue/shared": ["@vue/shared@3.5.13", "", {}, "sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ=="],
 
-    "@zoom/videosdk": ["@zoom/videosdk@2.2.0", "", {}, "sha512-gns4UUQlpfhQmuVuK366vTVH4jBGPeqg8at5Wd9pdLCEldK6YsFTZD3VtbCvFxQ2HBHTsN/zdJ6YFlHeluERAA=="],
+    "@zoom/videosdk": ["@zoom/videosdk@2.2.5", "", {}, "sha512-syYBjO/DYA27Ah1iB70jVM/TrzsfVwQ7y222J7OjYSz4NConX1GfDUi49fLkyWydUeqERlfRiXP7WqxksRlJUg=="],
 
     "abbrev": ["abbrev@3.0.0", "", {}, "sha512-+/kfrslGQ7TNV2ecmQwMJj/B65g5KVq1/L3SGVZ3tCYGqlzFuFCGBZJtMP99wH3NpEUyAjn0zPdPUg0D+DwrOA=="],
 
