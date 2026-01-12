@@ -4,15 +4,15 @@
     "": {
       "name": "nuxt-app",
       "dependencies": {
-        "@types/jsrsasign": "^10.5.14",
-        "@types/node": "^24.10.0",
-        "@zoom/videosdk": "^2.3.0",
+        "@zoom/videosdk": "^2.3.5",
         "jsrsasign": "^11.1.0",
         "nuxt": "^4.2.0",
         "vue": "^3.5.22",
         "vue-router": "^4.6.3",
       },
       "devDependencies": {
+        "@types/jsrsasign": "^10.5.14",
+        "@types/node": "^24.10.0",
         "autoprefixer": "^10.4.19",
         "postcss": "^8.4.38",
         "tailwindcss": "^3.4.3",
@@ -450,7 +450,7 @@
 
     "@vue/shared": ["@vue/shared@3.5.22", "", {}, "sha512-F4yc6palwq3TT0u+FYf0Ns4Tfl9GRFURDN2gWG7L1ecIaS/4fCIuFOjMTnCyjsu/OK6vaDKLCrGAa+KvvH+h4w=="],
 
-    "@zoom/videosdk": ["@zoom/videosdk@2.3.0", "", {}, "sha512-sQZ4CmYWFeJoPXP3ix2GGKdUcUeraYsHmhPY/PZrU90wbb2/d2bH9jJIgptOnuXoqEqWq3BqoegAgckGzTveyQ=="],
+    "@zoom/videosdk": ["@zoom/videosdk@2.3.5", "", {}, "sha512-Zs/ASdN/n7uNxrHcQ7qsRyoBFMIy0CRCe1R70zbqlNiQJ+N7bwsFpfsxOrjljYBOkbkjzCMEszZPSpB6ZHMVxg=="],
 
     "abbrev": ["abbrev@3.0.1", "", {}, "sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg=="],
 

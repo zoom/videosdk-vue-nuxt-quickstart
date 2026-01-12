@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@zoom/videosdk": "^2.3.0",
+    "@zoom/videosdk": "^2.3.5",
     "jsrsasign": "^11.1.0",
     "nuxt": "^4.2.0",
     "vue": "^3.5.22",
