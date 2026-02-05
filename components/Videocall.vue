@@ -46,7 +46,11 @@ const leaveCall = async () => {
   const mediaStream = client.getMediaStream();
   for (const user of client.getAllUser()) {
     const element = await mediaStream.detachVideo(user.userId);
-    Array.isArray(element) ? element.forEach((el) => el.remove()) : element.remove();
+    try {
+      Array.isArray(element) ? element.forEach((el) => el.remove()) : element.remove();
+    } catch (e) {
+      console.log(e);
+    }
   }
   client.off("peer-video-state-change", renderVideo);
   await client.leave();
